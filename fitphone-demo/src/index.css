@@ -1,0 +1,6 @@
+/* Minimal global reset - App.css contains all styling */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}

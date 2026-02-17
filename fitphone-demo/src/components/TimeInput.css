@@ -1,0 +1,73 @@
+.time-input {
+  width: 100%;
+  min-width: 0;
+}
+
+.time-label {
+  display: block;
+  font-size: 0.875rem;
+  color: #9ca3af;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+.time-input-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 1rem;
+  width: 100%;
+  min-width: 0;
+}
+
+.time-segment {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  flex-shrink: 1;
+  min-width: 0;
+}
+
+.time-value {
+  width: 50px;
+  min-width: 40px;
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 1.75rem;
+  font-weight: 600;
+  text-align: center;
+  outline: none;
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
+
+.time-value::placeholder {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.time-value::-webkit-outer-spin-button,
+.time-value::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.time-value:focus {
+  color: #3b82f6;
+}
+
+.time-unit {
+  font-size: 1.25rem;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.time-separator {
+  font-size: 2rem;
+  color: #4b5563;
+  font-weight: 300;
+}

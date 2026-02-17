@@ -1,0 +1,589 @@
+/* ========================================
+   CSS CUSTOM PROPERTIES
+   ======================================== */
+:root {
+  /* Colors */
+  --color-primary: #3b82f6;
+  --color-primary-dark: #2563eb;
+  --color-secondary: #8b5cf6;
+  --color-success: #10b981;
+  --color-warning: #f59e0b;
+  --color-error: #ef4444;
+  
+  --color-bg-dark: #020617;
+  --color-bg-darker: #010409;
+  --color-surface: rgba(255, 255, 255, 0.05);
+  --color-surface-hover: rgba(255, 255, 255, 0.08);
+  --color-border: rgba(255, 255, 255, 0.1);
+  --color-border-hover: rgba(255, 255, 255, 0.2);
+  
+  --color-text-primary: #ffffff;
+  --color-text-secondary: #d1d5db;
+  --color-text-muted: #9ca3af;
+  --color-text-disabled: #6b7280;
+  
+  /* Spacing */
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+  --space-2xl: 3rem;
+  
+  /* Border Radius */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --radius-2xl: 40px;
+  
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.15);
+  --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.2);
+  
+  /* Transitions */
+  --transition-fast: 0.15s ease;
+  --transition-base: 0.2s ease;
+  --transition-slow: 0.3s ease;
+  
+  /* Phone dimensions */
+  --phone-width: 430px;
+  --phone-height: 90vh;
+  --phone-max-height: 840px;
+  
+  /* Typography */
+  color-scheme: dark;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+/* ========================================
+   GLOBAL RESETS & BASE STYLES
+   ======================================== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: radial-gradient(circle at top left, var(--color-bg-dark), var(--color-bg-darker));
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* ========================================
+   APP CONTAINER
+   ======================================== */
+.app-root {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: var(--space-lg);
+}
+
+/* ========================================
+   PHONE FRAME
+   ======================================== */
+.phone-frame {
+  position: relative;
+  width: min(var(--phone-width), 100%);
+  height: var(--phone-height);
+  max-height: var(--phone-max-height);
+  background: var(--color-bg-darker);
+  border-radius: var(--radius-2xl);
+  box-shadow: 
+    0 0 0 8px rgba(255, 255, 255, 0.05),
+    0 25px 50px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.phone-notch {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 180px;
+  height: 30px;
+  background: var(--color-bg-darker);
+  border-radius: 0 0 20px 20px;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+}
+
+.notch-speaker {
+  width: 60px;
+  height: 6px;
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 3px;
+}
+
+.notch-camera {
+  width: 10px;
+  height: 10px;
+  background: radial-gradient(circle, rgba(30, 60, 100, 0.5), transparent);
+  border-radius: 50%;
+  border: 1px solid rgba(0, 0, 0, 0.4);
+}
+
+/* ========================================
+   PHONE INNER SCREEN
+   ======================================== */
+.phone-inner,
+.phone-screen {
+  flex: 1;
+  background: linear-gradient(135deg, var(--color-bg-dark) 0%, var(--color-bg-darker) 100%);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-height: 0;
+}
+
+/* ========================================
+   STATUS BAR
+   ======================================== */
+.status-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-md) var(--space-lg);
+  padding-top: calc(var(--space-md) + 30px);
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.status-icons {
+  display: flex;
+  gap: var(--space-xs);
+  align-items: center;
+}
+
+.status-dot {
+  width: 6px;
+  height: 6px;
+  background: var(--color-success);
+  border-radius: 50%;
+}
+
+.status-bar-icon {
+  width: 18px;
+  height: 12px;
+  background: var(--color-text-primary);
+  border-radius: 2px;
+  opacity: 0.8;
+}
+
+.status-bar-icon.wide {
+  width: 24px;
+}
+
+/* ========================================
+   HERO SECTION
+   ======================================== */
+.phone-header {
+  flex-shrink: 0;
+}
+
+.hero {
+  padding: var(--space-md) var(--space-lg) var(--space-lg);
+}
+
+.hero-title {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  margin-bottom: var(--space-md);
+}
+
+.hero-title h1 {
+  font-size: 1.75rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: -0.02em;
+}
+
+.hero-title span {
+  font-size: 0.9375rem;
+  color: var(--color-text-muted);
+  font-weight: 500;
+}
+
+.hero-pill {
+  display: inline-block;
+  padding: var(--space-sm) var(--space-md);
+  background: linear-gradient(135deg, rgba(251, 146, 60, 0.15), rgba(239, 68, 68, 0.15));
+  border: 1px solid rgba(251, 146, 60, 0.3);
+  border-radius: 20px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #fb923c;
+}
+
+.hero-disclaimer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.disclaimer-text {
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  color: var(--color-text-muted);
+  padding: var(--space-sm) var(--space-xs);
+  text-align: left;
+}
+
+/* ========================================
+   MAIN CONTENT AREA
+   ======================================== */
+.phone-content {
+  flex: 1;
+  min-height: 0;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  padding: 0;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+  -webkit-overflow-scrolling: touch;
+}
+
+.phone-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.phone-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.phone-content::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 3px;
+}
+
+.phone-content::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* ========================================
+   FORM & SECTIONS
+   ======================================== */
+.demo-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.section {
+  margin-bottom: var(--space-lg);
+}
+
+.step-section {
+  animation: fadeInUp 0.4s ease;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.section-title {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-sm);
+}
+
+.section-description {
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-lg);
+  line-height: 1.6;
+}
+
+/* ========================================
+   FIELD LAYOUTS
+   ======================================== */
+.field-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.field label {
+  font-size: 0.9375rem;
+  color: var(--color-text-secondary);
+  font-weight: 600;
+}
+
+.split-inputs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-md);
+  width: 100%;
+}
+
+@media (max-width: 380px) {
+  .split-inputs {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ========================================
+   NUMBER INPUT (LARGE)
+   ======================================== */
+.number-input-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: var(--space-lg);
+}
+
+.number-input-large {
+  width: 120px;
+  background: var(--color-surface);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+  color: var(--color-text-primary);
+  font-size: 2.5rem;
+  font-weight: 700;
+  text-align: center;
+  outline: none;
+  transition: all var(--transition-base);
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
+
+.number-input-large::-webkit-outer-spin-button,
+.number-input-large::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.number-input-large:focus {
+  border-color: var(--color-primary);
+  background: rgba(59, 130, 246, 0.1);
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+}
+
+/* ========================================
+   NAVIGATION BUTTONS
+   ======================================== */
+.step-navigation {
+  display: flex;
+  gap: var(--space-md);
+  margin-top: var(--space-xl);
+}
+
+.primary-button,
+.secondary-button {
+  flex: 1;
+  padding: 1rem var(--space-lg);
+  border-radius: var(--radius-md);
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all var(--transition-base);
+  border: none;
+  outline: none;
+  text-align: center;
+}
+
+.primary-button {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+  color: var(--color-text-primary);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.primary-button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(59, 130, 246, 0.4);
+}
+
+.primary-button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.primary-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.secondary-button {
+  background: var(--color-surface);
+  border: 2px solid var(--color-border);
+  color: var(--color-text-primary);
+}
+
+.secondary-button:hover {
+  background: var(--color-surface-hover);
+  border-color: var(--color-border-hover);
+  transform: translateY(-1px);
+}
+
+.secondary-button:active {
+  transform: translateY(0);
+}
+
+/* ========================================
+   ERROR MESSAGE
+   ======================================== */
+.error-message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-xl);
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid var(--color-error);
+  border-radius: var(--radius-lg);
+  text-align: center;
+}
+
+.error-icon {
+  font-size: 3rem;
+}
+
+.error-message p {
+  color: var(--color-text-secondary);
+  font-size: 0.9375rem;
+  line-height: 1.6;
+}
+
+/* ========================================
+   HOME INDICATOR
+   ======================================== */
+.home-indicator-wrapper {
+  flex-shrink: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: var(--space-md);
+  background: var(--color-bg-darker);
+}
+
+.home-indicator {
+  width: 120px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 2px;
+}
+
+/* ========================================
+   RESPONSIVE DESIGN
+   ======================================== */
+@media (max-width: 480px) {
+  .phone-frame {
+    height: 100vh;
+    max-height: none;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .app-root {
+    padding: 0;
+  }
+
+  .phone-content {
+    padding: 0 var(--space-md) var(--space-lg);
+  }
+
+  .hero {
+    padding: var(--space-md) var(--space-md) var(--space-lg);
+  }
+
+  .split-inputs {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  .phone-frame {
+    width: 480px;
+    max-height: 920px;
+  }
+}
+
+@media (orientation: landscape) and (max-height: 600px) {
+  .phone-frame {
+    height: 95vh;
+  }
+
+  .hero {
+    padding: var(--space-sm) var(--space-lg);
+  }
+
+  .hero-title h1 {
+    font-size: 1.5rem;
+  }
+}
+
+/* ========================================
+   ACCESSIBILITY
+   ======================================== */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* ========================================
+   UTILITY CLASSES
+   ======================================== */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}

@@ -1,0 +1,111 @@
+.emoji-slider {
+  width: 100%;
+  padding: 1rem 0;
+}
+
+.emoji-display {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  min-height: 60px;
+}
+
+.emoji-large {
+  font-size: 3rem;
+  transition: transform 0.2s ease;
+  display: inline-block;
+}
+
+.emoji-slider.dragging .emoji-large {
+  transform: scale(1.1);
+}
+
+.slider-container {
+  position: relative;
+  padding: 0 1rem;
+  margin-bottom: 2.5rem;
+}
+
+.slider-input {
+  width: 100%;
+  height: 6px;
+  -webkit-appearance: none;
+  appearance: none;
+  background: linear-gradient(90deg, #ef4444, #f59e0b, #10b981);
+  border-radius: 3px;
+  outline: none;
+  cursor: pointer;
+}
+
+.slider-input::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #fff;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  transition: transform 0.2s ease;
+}
+
+.slider-input::-webkit-slider-thumb:hover,
+.slider-input::-webkit-slider-thumb:active {
+  transform: scale(1.2);
+}
+
+.slider-input::-moz-range-thumb {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #fff;
+  cursor: pointer;
+  border: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  transition: transform 0.2s ease;
+}
+
+.slider-input::-moz-range-thumb:hover,
+.slider-input::-moz-range-thumb:active {
+  transform: scale(1.2);
+}
+
+.emoji-markers {
+  position: absolute;
+  top: -10px;
+  left: 0;
+  right: 0;
+  height: 30px;
+  pointer-events: none;
+}
+
+.emoji-marker {
+  position: absolute;
+  transform: translateX(-50%);
+  font-size: 1.5rem;
+  opacity: 0.4;
+  transition: all 0.2s ease;
+  background: none;
+  border: none;
+  cursor: pointer;
+  pointer-events: all;
+  padding: 0.25rem;
+  border-radius: 50%;
+}
+
+.emoji-marker:hover {
+  opacity: 0.8;
+  transform: translateX(-50%) scale(1.1);
+}
+
+.emoji-marker.active {
+  opacity: 1;
+  transform: translateX(-50%) scale(1.2);
+}
+
+.slider-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  color: #9ca3af;
+  padding: 0 1rem;
+}

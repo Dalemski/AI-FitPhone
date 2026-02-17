@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sleep Quality Prediction - Technical Showcase</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #FF7116 0%, #FF9F4D 100%);
+            overflow: hidden;
+        }
+
+        .slide-container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .slide {
+            width: 95%;
+            height: 95%;
+            max-width: 1920px;
+            max-height: 1080px;
+            background: white;
+            border-radius: 20px;
+            padding: 3vh 4vw;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            display: none;
+            flex-direction: column;
+            position: absolute;
+            overflow-y: auto;
+        }
+
+        .slide.active {
+            display: flex;
+            animation: slideIn 0.5s ease-in-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .slide-number {
+            position: absolute;
+            bottom: 2vh;
+            right: 3vw;
+            font-size: clamp(14px, 1.2vw, 18px);
+            color: #666;
+            font-weight: 600;
+        }
+
+        .logo {
+            position: absolute;
+            top: 2vh;
+            right: 3vw;
+            width: clamp(60px, 5vw, 80px);
+            height: auto;
+            border-radius: 10px;
+        }
+
+        h1 {
+            font-size: clamp(2.5em, 5vw, 4em);
+            color: #2d3748;
+            margin-bottom: 2vh;
+            text-align: center;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        h2 {
+            font-size: clamp(2em, 4vw, 3em);
+            color: #FF7116;
+            margin-bottom: 2vh;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        h3 {
+            font-size: clamp(1.5em, 2.5vw, 2em);
+            color: #4a5568;
+            margin-bottom: 1.5vh;
+            font-weight: 600;
+            line-height: 1.3;
+        }
+
+        p {
+            font-size: clamp(1em, 1.5vw, 1.5em);
+            line-height: 1.5;
+            color: #4a5568;
+            margin-bottom: 1vh;
+        }
+
+        .subtitle {
+            font-size: clamp(1.2em, 2vw, 1.8em);
+            color: #718096;
+            text-align: center;
+            margin-top: -1vh;
+        }
+
+        ul {
+            list-style: none;
+            font-size: clamp(1em, 1.5vw, 1.5em);
+            color: #4a5568;
+        }
+
+        li {
+            padding: 1vh 0;
+            padding-left: clamp(35px, 3.5vw, 55px);
+            position: relative;
+            line-height: 1.4;
+        }
+
+        li::before {
+            content: "▸";
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #FF7116;
+            font-size: 1.5em;
+            line-height: 1;
+        }
+
+        .highlight {
+            background: linear-gradient(120deg, #FFD700 0%, #FFA500 100%);
+            padding: 3px 10px;
+            border-radius: 5px;
+            font-weight: 600;
+            color: #2d3748;
+        }
+
+        .metric-box {
+            display: inline-block;
+            background: linear-gradient(135deg, #FF7116 0%, #FF9F4D 100%);
+            color: white;
+            padding: clamp(15px, 2vh, 20px) clamp(25px, 3vw, 40px);
+            border-radius: 15px;
+            margin: clamp(10px, 1.5vh, 15px);
+            font-size: clamp(1.5em, 2.5vw, 2em);
+            font-weight: 700;
+            box-shadow: 0 8px 20px rgba(255, 113, 22, 0.3);
+        }
+
+        .metric-label {
+            font-size: 0.6em;
+            font-weight: 400;
+            opacity: 0.9;
+            display: block;
+            margin-top: 0.5vh;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: clamp(20px, 3vw, 40px);
+            margin-top: 2vh;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: clamp(15px, 2vw, 30px);
+            margin-top: 2vh;
+        }
+
+        @media (max-width: 1200px) {
+            .grid-3 {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .card {
+            background: #f7fafc;
+            padding: clamp(15px, 2vw, 30px);
+            border-radius: 15px;
+            border-left: 6px solid #FF7116;
+        }
+
+        .card h4 {
+            font-size: clamp(1.2em, 2vw, 1.8em);
+            color: #FF7116;
+            margin-bottom: 1vh;
+        }
+
+        .card p {
+            font-size: clamp(0.9em, 1.3vw, 1.3em);
+            margin-bottom: 0.5vh;
+        }
+
+        .emoji {
+            font-size: 1.3em;
+            margin-right: 10px;
+        }
+
+        .code {
+            background: #2d3748;
+            color: #68d391;
+            padding: 2px 8px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85em;
+            white-space: nowrap;
+        }
+
+        .center {
+            text-align: center;
+        }
+
+        .big-number {
+            font-size: clamp(3em, 8vw, 5em);
+            font-weight: 800;
+            color: #FF7116;
+            text-align: center;
+            margin: 2vh 0;
+        }
+
+        .warning {
+            background: #fed7d7;
+            border-left: 6px solid #fc8181;
+            padding: clamp(15px, 2vh, 25px);
+            border-radius: 10px;
+            margin: 1.5vh 0;
+        }
+
+        .success {
+            background: #c6f6d5;
+            border-left: 6px solid #48bb78;
+            padding: clamp(15px, 2vh, 25px);
+            border-radius: 10px;
+            margin: 1.5vh 0;
+        }
+
+        .info {
+            background: #bee3f8;
+            border-left: 6px solid #4299e1;
+            padding: clamp(15px, 2vh, 25px);
+            border-radius: 10px;
+            margin: 1.5vh 0;
+        }
+
+        .feature-list {
+            background: #f7fafc;
+            padding: clamp(15px, 2vw, 30px);
+            border-radius: 15px;
+            margin: 1.5vh 0;
+        }
+
+        .feature-list li {
+            font-size: clamp(1em, 1.4vw, 1.4em);
+            padding: 0.8vh 0;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: clamp(30px, 3vh, 40px);
+            background: #e2e8f0;
+            border-radius: 20px;
+            overflow: hidden;
+            margin: 1.5vh 0;
+            position: relative;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #FF7116 0%, #FF9F4D 100%);
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 15px;
+            color: white;
+            font-weight: 700;
+            font-size: clamp(1em, 1.3vw, 1.3em);
+        }
+
+        .flex-center {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+        }
+
+        .table {
+            width: 100%;
+            margin: 1.5vh 0;
+            border-collapse: collapse;
+            font-size: clamp(0.7em, 1vw, 1em);
+        }
+
+        .table th {
+            background: #FF7116;
+            color: white;
+            padding: clamp(10px, 1.5vh, 20px);
+            font-size: clamp(1em, 1.3vw, 1.4em);
+            text-align: left;
+        }
+
+        .table td {
+            padding: clamp(10px, 1.2vh, 18px) clamp(10px, 1.5vw, 20px);
+            font-size: clamp(0.9em, 1.2vw, 1.3em);
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .table tr:hover {
+            background: #f7fafc;
+        }
+
+        @media (max-width: 768px) {
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="slide-container">
+        <!-- Slide 1: Title -->
+        <div class="slide active">
+            <img src="fitphone-logo.png" alt="FitPhone Logo" class="logo">
+            <div class="flex-center">
+                <h1>Sleep Quality Prediction</h1>
+                <p class="subtitle">Using Gradient Boosting & Machine Learning</p>
+                <div style="margin-top: 60px;">
+                    <div class="metric-box">
+                        78.75%
+                        <span class="metric-label">Test Accuracy</span>
+                    </div>
+                    <div class="metric-box">
+                        100%
+                        <span class="metric-label">Off-by-One Accuracy</span>
+                    </div>
+                    <div class="metric-box">
+                        93.86%
+                        <span class="metric-label">CV Accuracy</span>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-number">1 / 15</div>
+        </div>
+
+        <!-- Slide 2: Problem Statement -->
+        <div class="slide">
+            <img src="fitphone-logo.png" alt="FitPhone Logo" class="logo">
+            <h2>The Challenge</h2>
+            <p style="font-size: 2.2em; margin-bottom: 40px;">Can we predict tonight's sleep quality using pre-bedtime data?</p>
+            
+            <div class="info">
+                <h3>Goal</h3>
+                <p>Build a model that predicts sleep quality (1-4 scale) using only information available before sleeping</p>
+            </div>
+
+            <div class="grid-2" style="margin-top: 40px;">
+                <div>
+                    <h3>Input Features</h3>
+                    <ul class="feature-list">
+                        <li>Screen time hours</li>
+                        <li>Mental wellness index</li>
+                        <li>Stress levels</li>
+                        <li>Exercise & social hours</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3>Output</h3>
+                    <ul class="feature-list">
+                        <li>Class 1: Excellent</li>
+                        <li>Class 2: Good</li>
+                        <li>Class 3: Moderate</li>
+                        <li>Class 4: Poor</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="slide-number">2 / 15</div>
+        </div>
+
+        <!-- Slide 3: Dataset Overview -->
+        <div class="slide">
+            <img src="fitphone-logo.png" alt="FitPhone Logo" class="logo">
+            <h2>Dataset Overview</h2>
+            
+            <div class="big-number">400</div>
+            <p class="center" style="font-size: 2.2em; margin-bottom: 50px;">Samples from ScreenTime vs MentalWellness Dataset</p>
+
+            <div class="grid-3">
+                <div class="card">
+                    <h4>Demographics</h4>
+                    <p>Age, Gender, Occupation, Work Mode</p>
+                </div>
+                <div class="card">
+                    <h4>Screen Time</h4>
+                    <p>Total hours, Work-related, Leisure time</p>
+                </div>
+                <div class="card">
+                    <h4>Lifestyle</h4>
+                    <p>Stress, Exercise, Social hours, Mental wellness</p>
+                </div>
+            </div>
+
+            <div style="margin-top: 50px;">
+                <h3>Features Used: 12 Predictive Variables</h3>
+                <p style="font-size: 1.6em;">Target: <span class="code">sleep_quality_1_5</span> (ordinal scale)</p>
+            </div>
+            <div class="slide-number">3 / 15</div>
+        </div>
+
+        <!-- Slide 4: Critical Data Issue -->
+        <div class="slide">
+            <img src="fitphone-logo.png" alt="FitPhone Logo" class="logo">
+            <h2>Data Leakage Prevention</h2>
+            
+            <div class="warning">
+                <h3><span class="emoji">⚠️</span>Temporal Impossibility Detected</h3>
+                <p style="font-size: 1.8em;">Original dataset contained <span class="code">sleep_hours</span> feature</p>
+            </div>
+
+            <div style="margin: 50px 0;">
+                <p style="font-size: 2em; text-align: center; font-weight: 600;">We cannot know tonight's sleep duration<br/>BEFORE we go to sleep!</p>
+            </div>
+
+            <div class="success">
+                <h3><span class="emoji">✓</span>Solution</h3>
+                <p style="font-size: 1.8em;">Removed <span class="code">sleep_hours</span> from training features</p>
+                <p style="font-size: 1.6em; margin-top: 15px;">Model now uses only pre-bedtime information for realistic predictions</p>
+            </div>
+
+            <div style="margin-top: 40px;">
+                <p style="font-size: 1.7em; color: #667eea; font-weight: 600; text-align: center;">This ensures deployment readiness for real-world wellness apps</p>
+            </div>
+            <div class="slide-number">4 / 15</div>
+        </div>
+
+        <!-- Slide 5: Class Imbalance Problem -->
+        <div class="slide">
+            <img src="fitphone-logo.png" alt="FitPhone Logo" class="logo">
+            <h2>The Class Imbalance Challenge</h2>
+            
+            <div style="margin: 40px 0;">
+                <h3>Original Distribution</h3>
+                <table class="table">
+                    <tr>
+                        <th>Class</th>
+                        <th>Sleep Quality</th>
+                        <th>Samples</th>
+                        <th>Percentage</th>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>Excellent</td>
+                        <td><strong>275</strong></td>
+                        <td>68.8%</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Good</td>
+                        <td>94</td>
+                        <td>23.5%</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>Moderate</td>
+                        <td>28</td>
+                        <td>7.0%</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>Poor</td>
+                        <td><strong style="color: #fc8181;">3</strong></td>
+                        <td>0.8%</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="warning">
+                <h3>Problem</h3>
+                <p style="font-size: 1.7em;">Imbalance ratio: <span class="highlight">91.7:1</span> (majority/minority)</p>
+                <p style="font-size: 1.6em; margin-top: 15px;">Models will bias heavily toward predicting Class 1</p>
+            </div>
+            <div class="slide-number">5 / 15</div>
+        </div>
+
+        <!-- Slide 6: SMOTE Solution -->
+        <div class="slide">
+            <img src="fitphone-logo.png" alt="FitPhone Logo" class="logo">
+            <h2>SMOTE: Class Balancing</h2>
+            
+            <div class="info">
+                <h3>Synthetic Minority Over-sampling Technique</h3>
+                <p style="font-size: 1.7em;">Generates synthetic samples by interpolating between k-nearest neighbors of minority classes</p>
+            </div>
+
+            <div class="grid-2" style="margin-top: 50px;">
+                <div>
+                    <h3>Before SMOTE</h3>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 86%;">275</div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 29%;">94</div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 9%;">28</div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 1%;">3</div>
+                    </div>
+                </div>
+                <div>
+                    <h3>After SMOTE</h3>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 100%;">220</div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 100%;">220</div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 100%;">220</div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 100%;">220</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="success" style="margin-top: 50px;">
+                <p style="font-size: 1.8em; text-align: center;">Perfectly balanced training set: 220 samples per class</p>
+            </div>
+            <div class="slide-number">6 / 15</div>
+        </div>
+
+        <!-- Slide 7: Model Selection -->
+        <div class="slide">
+            <img src="fitphone-logo.png" alt="FitPhone Logo" class="logo">
+            <h2>Model: Gradient Boosting</h2>
+            
+            <div style="margin: 40px 0;">
+                <h3>Why Gradient Boosting?</h3>
+                <ul style="font-size: 1.9em;">
+                    <li>Sequential ensemble learning</li>
+                    <li>Builds trees to correct previous errors</li>
+                    <li>Excellent for tabular data with mixed features</li>
+                    <li>Handles non-linear relationships naturally</li>
+                    <li>Robust to feature scaling differences</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-top: 50px;">
+                <h4>Key Algorithm Components</h4>
+                <p><span class="code">GradientBoostingClassifier</span> from scikit-learn</p>
+                <p style="margin-top: 15px;">Combined with <span class="code">SMOTE</span> for class balancing</p>
+                <p style="margin-top: 15px;">Optimized via <span class="code">GridSearchCV</span> with 5-fold CV</p>
+            </div>
+            <div class="slide-number">7 / 15</div>
+        </div>
+
+        <!-- Slide 8: Preprocessing Pipeline -->
+        <div class="slide">
+            <img src="fitphone-logo.png" alt="FitPhone Logo" class="logo">
+            <h2>Preprocessing Pipeline</h2>
+            
+            <div class="grid-2">
+                <div class="card">
+                    <h4>Numeric Features</h4>
+                    <p style="font-size: 1.6em; margin-top: 20px;">
+                        <span class="code">StandardScaler</span>
+                    </p>
+                    <ul style="font-size: 1.5em; margin-top: 20px;">
+                        <li>Zero mean (μ = 0)</li>
+                        <li>Unit variance (σ = 1)</li>
+                        <li>Prevents feature domination</li>
+                    </ul>
+                    <p style="font-size: 1.5em; margin-top: 25px;">
+                        <strong>9 features:</strong> screen time, stress, productivity, mental wellness, etc.
+                    </p>
+                </div>
+                <div class="card">
+                    <h4>Categorical Features</h4>
+                    <p style="font-size: 1.6em; margin-top: 20px;">
+                        <span class="code">OneHotEncoder</span>
+                    </p>
+                    <ul style="font-size: 1.5em; margin-top: 20px;">
+                        <li>Binary dummy variables</li>
+                        <li>Drop first to avoid collinearity</li>
+                        <li>No ordinal assumptions</li>
+                    </ul>
+                    <p style="font-size: 1.5em; margin-top: 25px;">
+                        <strong>3 features:</strong> gender, occupation, work_mode
+                    </p>
+                </div>
+            </div>
+
+            <div class="info" style="margin-top: 50px;">
+                <p style="font-size: 1.8em; text-align: center;">
+                    Pipeline fitted on training data only → prevents data leakage
+                </p>
+            </div>
+            <div class="slide-number">8 / 15</div>
+        </div>
+
+        <!-- Slide 9: Hyperparameter Optimization -->
+        <div class="slide">
+            <img src="fitphone-logo.png" alt="FitPhone Logo" class="logo">
+            <h2>Hyperparameter Tuning</h2>
+            
+            <div class="big-number">54</div>
+            <p class="center" style="font-size: 2.2em; margin-bottom: 50px;">Parameter combinations evaluated via GridSearchCV</p>
+
+            <div class="grid-2">
+                <div>
+                    <h3>Search Space</h3>
+                    <table class="table" style="font-size: 0.9em;">
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Values Tested</th>
+                        </tr>
+                        <tr>
+                            <td>n_estimators</td>
+                            <td>50, 100, 150</td>
+                        </tr>
+                        <tr>
+                            <td>learning_rate</td>
+                            <td>0.05, 0.1, 0.2</td>
+                        </tr>
+                        <tr>
+                            <td>max_depth</td>
+                            <td>3, 4, 5</td>
+                        </tr>
+                        <tr>
+                            <td>min_samples_split</td>
+                            <td>2, 5</td>
+                        </tr>
+                    </table>
+                </div>
+                <div>
+                    <h3>Best Configuration</h3>
+                    <div class="success" style="height: 100%;">
+                        <ul style="font-size: 1.7em;">
+                            <li><strong>n_estimators:</strong> 150</li>
+                            <li><strong>learning_rate:</strong> 0.1</li>
+                            <li><strong>max_depth:</strong> 3</li>
+                            <li><strong>min_samples_split:</strong> 2</li>
+                        </ul>
+                        <p style="font-size: 1.8em; margin-top: 30px; font-weight: 600;">
+                            CV Accuracy: <span class="highlight">93.86%</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-number">9 / 15</div>
+        </div>
+
+        <!-- Slide 10: Cross-Validation -->
+        <div class="slide">
+            <img src="fitphone-logo.png" alt="FitPhone Logo" class="logo">
+            <h2>Model Stability Assessment</h2>
+            
+            <div class="info">
+                <h3>5-Fold Cross-Validation on Balanced Data</h3>
+                <p style="font-size: 1.7em;">Tests model robustness across different data splits</p>
+            </div>
+
+            <div style="margin: 60px 0;">
+                <table class="table">
+                    <tr>
+                        <th>Fold</th>
+                        <th>Accuracy</th>
+                        <th>Status</th>
+                    </tr>
+                    <tr>
+                        <td>Fold 1</td>
+                        <td>94.32%</td>
+                        <td>✓</td>
+                    </tr>
+                    <tr>
+                        <td>Fold 2</td>
+                        <td>93.18%</td>
+                        <td>✓</td>
+                    </tr>
+                    <tr>
+                        <td>Fold 3</td>
+                        <td>95.45%</td>
+                        <td>✓</td>
+                    </tr>
+                    <tr>
+                        <td>Fold 4</td>
+                        <td>92.05%</td>
+                        <td>✓</td>
+                    </tr>
+                    <tr>
+                        <td>Fold 5</td>
+                        <td>94.32%</td>
+                        <td>✓</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="success">
+                <p style="font-size: 2em; text-align: center;">
+                    Mean: <span class="highlight">93.86%</span> | Std Dev: <span class="highlight">1.20%</span>
+                </p>
+                <p style="font-size: 1.7em; text-align: center; margin-top: 15px;">
+                    Low variance indicates stable, reliable model
+                </p>
+            </div>
+            <div class="slide-number">10 / 15</div>
+        </div>
+
+        <!-- Slide 11: Test Results -->
+        <div class="slide">
+            <img src="fitphone-logo.png" alt="FitPhone Logo" class="logo">
+            <h2>Test Set Performance</h2>
+            
+            <div class="grid-3" style="margin-bottom: 50px;">
+                <div class="metric-box" style="display: block; text-align: center;">
+                    78.75%
+                    <span class="metric-label">Test Accuracy</span>
+                </div>
+                <div class="metric-box" style="display: block; text-align: center;">
+                    100%
+                    <span class="metric-label">Off-by-One</span>
+                </div>
+                <div class="metric-box" style="display: block; text-align: center;">
+                    +14.7%
+                    <span class="metric-label">vs Baseline</span>
+                </div>
+            </div>
+
+            <div class="info">
+                <h3>Why 78.75% < 93.86% CV?</h3>
+                <p style="font-size: 1.7em;">This gap is <strong>expected and correct:</strong></p>
+                <ul style="font-size: 1.6em; margin-top: 20px;">
+                    <li>CV measured on balanced SMOTE data (220 per class)</li>
+                    <li>Test set has original imbalanced distribution (275/94/28/3)</li>
+                    <li>Minority classes harder to predict with limited real samples</li>
+                </ul>
+            </div>
+
+            <div class="success" style="margin-top: 40px;">
+                <p style="font-size: 1.9em; text-align: center; font-weight: 600;">
+                    100% off-by-one accuracy = ZERO catastrophic errors
+                </p>
+                <p style="font-size: 1.6em; text-align: center; margin-top: 15px;">
+                    Never predicts "Excellent" when actual is "Poor"
+                </p>
+            </div>
+            <div class="slide-number">11 / 15</div>
+        </div>
+
+        <!-- Slide 12: Feature Importance -->
+        <div class="slide">
+            <img src="fitphone-logo.png" alt="FitPhone Logo" class="logo">
+            <h2>Feature Importance Analysis</h2>
+            
+            <div class="info">
+                <h3>Permutation Importance (10 repeats)</h3>
+                <p style="font-size: 1.6em;">Measures accuracy drop when feature values are randomly shuffled</p>
+            </div>
+
+            <div style="margin: 40px 0;">
+                <h3>Top 5 Predictive Features</h3>
+                <table class="table">
+                    <tr>
+                        <th>Rank</th>
+                        <th>Feature</th>
+                        <th>Importance</th>
+                        <th>Impact</th>
+                    </tr>
+                    <tr style="background: #fef5e7;">
+                        <td><strong>1</strong></td>
+                        <td><strong>mental_wellness_index_0_100</strong></td>
+                        <td><strong>0.2975</strong></td>
+                        <td>🥇 Dominant</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>screen_time_hours</td>
+                        <td>0.0337</td>
+                        <td>Secondary</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>stress_level_0_10</td>
+                        <td>0.0062</td>
+                        <td>Minor</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>productivity_0_100</td>
+                        <td>0.0050</td>
+                        <td>Minor</td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>exercise_hours</td>
+                        <td>0.0037</td>
+                        <td>Minor</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="warning">
+                <p style="font-size: 1.8em; text-align: center; font-weight: 600;">
+                    Mental wellness explains 29.75% of model's predictive power
+                </p>
+            </div>
+            <div class="slide-number">12 / 15</div>
+        </div>
+
+        <!-- Slide 13: Key Insights -->
+        <div class="slide">
+            <img src="fitphone-logo.png" alt="FitPhone Logo" class="logo">
+            <h2>Key Technical Insights</h2>
+            
+            <div class="card" style="margin-bottom: 25px;">
+                <h4>1. Data Leakage Prevention</h4>
+                <p>Removed <span class="code">sleep_hours</span> to ensure temporal validity - cannot use future information</p>
+            </div>
+
+            <div class="card" style="margin-bottom: 25px;">
+                <h4>2. Class Imbalance Solution</h4>
+                <p>SMOTE with k=1 transformed 91.7:1 imbalance to perfect 1:1 balance</p>
+            </div>
+
+            <div class="card" style="margin-bottom: 25px;">
+                <h4>3. Mental Wellness Dominance</h4>
+                <p>Single feature accounts for ~30% of predictive power - stronger than all other features combined</p>
+            </div>
+
+            <div class="card" style="margin-bottom: 25px;">
+                <h4>4. Zero Catastrophic Errors</h4>
+                <p>100% off-by-one accuracy means predictions are always within ±1 class of truth</p>
+            </div>
+
+            <div class="card">
+                <h4>5. Production Ready</h4>
+                <p>Uses only pre-bedtime data → deployable in wellness apps for proactive sleep guidance</p>
+            </div>
+            <div class="slide-number">13 / 15</div>
+        </div>
+
+        <!-- Slide 14: Technical Stack -->
+        <div class="slide">
+            <img src="fitphone-logo.png" alt="FitPhone Logo" class="logo">
+            <h2>Technology Stack</h2>
+            
+            <div class="grid-2">
+                <div>
+                    <h3>Core Libraries</h3>
+                    <ul style="font-size: 1.7em;">
+                        <li><span class="code">scikit-learn 1.7.2</span><br/>
+                        <span style="font-size: 0.85em; color: #718096;">GradientBoosting, preprocessing</span></li>
+                        
+                        <li><span class="code">imbalanced-learn 0.13</span><br/>
+                        <span style="font-size: 0.85em; color: #718096;">SMOTE implementation</span></li>
+                        
+                        <li><span class="code">pandas 2.3.3</span><br/>
+                        <span style="font-size: 0.85em; color: #718096;">Data manipulation</span></li>
+                        
+                        <li><span class="code">numpy 2.3.4</span><br/>
+                        <span style="font-size: 0.85em; color: #718096;">Numerical operations</span></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3>Methodology</h3>
+                    <ul style="font-size: 1.7em;">
+                        <li><strong>Train/Test Split:</strong> 80/20 stratified</li>
+                        <li><strong>Validation:</strong> 5-fold cross-validation</li>
+                        <li><strong>Optimization:</strong> GridSearchCV (54 configs)</li>
+                        <li><strong>Random Seed:</strong> 42 (reproducibility)</li>
+                    </ul>
+
+                    <div class="success" style="margin-top: 40px;">
+                        <p style="font-size: 1.6em; text-align: center;">
+                            <strong>Fully reproducible</strong><br/>
+                            All stochastic components seeded
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-number">14 / 15</div>
+        </div>
+
+        <!-- Slide 15: Next Steps -->
+        <div class="slide">
+            <img src="fitphone-logo.png" alt="FitPhone Logo" class="logo">
+            <h2>Future Improvements</h2>
+            
+            <div class="card" style="margin-bottom: 25px; border-left-color: #fc8181;">
+                <h4>🔴 High Priority: More Minority Data</h4>
+                <p>Collect 50+ samples for Classes 3 & 4. Current model relies heavily on SMOTE synthetic samples for rare poor-sleep cases.</p>
+            </div>
+
+            <div class="card" style="margin-bottom: 25px; border-left-color: #fc8181;">
+                <h4>🔴 High Priority: Temporal Features</h4>
+                <p>Add day-of-week, seasonality, sleep history (7-day average). Implement time-series aware CV to prevent leakage.</p>
+            </div>
+
+            <div class="card" style="margin-bottom: 25px; border-left-color: #ffa500;">
+                <h4>🟡 Medium Priority: Alternative Balancing</h4>
+                <p>Benchmark SMOTE vs class weights, EasyEnsemble, and cost-sensitive learning. Evaluate if synthetic generation is optimal.</p>
+            </div>
+
+            <div class="card" style="border-left-color: #48bb78;">
+                <h4>🟢 Low Priority: Explainability</h4>
+                <p>Add SHAP values for individual predictions. Enable user-facing explanations: "Poor sleep predicted due to low mental wellness + high screen time".</p>
+            </div>
+            <div class="slide-number">15 / 16</div>
+        </div>
+
+        <!-- Slide 16: Infographic Poster -->
+        <div class="slide" style="padding: 0; background: transparent; box-shadow: none; border-radius: 0;">
+            <img src="Infographical Poster (1).png" alt="Project Infographic" style="width: 100%; height: 100%; object-fit: contain;">
+        </div>
+    </div>
+
+    <script>
+        const slides = document.querySelectorAll('.slide');
+        let currentSlide = 0;
+
+        function showSlide(index) {
+            slides.forEach(slide => slide.classList.remove('active'));
+            slides[index].classList.add('active');
+        }
+
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % slides.length;
+            showSlide(currentSlide);
+        }
+
+        // Auto-advance exactly every 10000ms (10 seconds)
+        setInterval(nextSlide, 15000);
+
+        // Manual navigation with arrow keys
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') {
+                currentSlide = (currentSlide + 1) % slides.length;
+                showSlide(currentSlide);
+            } else if (e.key === 'ArrowLeft') {
+                currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+                showSlide(currentSlide);
+            }
+        });
+
+        // Click to advance
+        document.addEventListener('click', nextSlide);
+    </script>
+</body>
+</html>
